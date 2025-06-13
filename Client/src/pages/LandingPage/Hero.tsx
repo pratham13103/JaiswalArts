@@ -4,6 +4,7 @@ import Features from "./Features";
 import Products from "./Products";
 import Testimonials from "./Testimonials";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const Hero: React.FC = () => {
   return (
@@ -52,18 +53,19 @@ const Hero: React.FC = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 1, duration: 0.8 }}
           >
-            <a
-              href="/products"
+            <Link
+              to="/all-products"
               className="px-6 py-3 text-lg font-semibold bg-red-600 hover:bg-orange-500 text-white rounded-lg transition-all"
             >
               Explore Artworks
-            </a>
-            <a
-              href="/custom-orders"
+            </Link>
+
+            <Link
+              to="/custom-orders"
               className="px-6 py-3 text-lg font-semibold border border-white hover:bg-white hover:text-black rounded-lg transition-all"
             >
               Custom Orders
-            </a>
+            </Link>
           </motion.div>
         </div>
       </section>

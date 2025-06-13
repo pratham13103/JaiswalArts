@@ -51,6 +51,16 @@ const TrendingProducts: React.FC = () => {
         </div>
       </div>
 
+      {/* Explore All Products Button */}
+      <div className="flex justify-center mt-10">
+        <a
+          href="/all-products"
+          className="px-8 py-3 text-lg font-semibold text-white bg-red-600 hover:bg-red-700 rounded-full shadow-md transition-all"
+        >
+          Explore All Products
+        </a>
+      </div>
+
       {/* Overlay Reel Viewer */}
       {selectedIndex !== null && (
         <div className="fixed inset-0 z-50 bg-[#2a2a2a] flex items-center justify-center">

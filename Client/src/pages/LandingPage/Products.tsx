@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useCart } from "../../context/CartContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TrendingProducts from "./TrendingProducts";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Product {
   id: number;
@@ -16,14 +17,15 @@ interface Product {
   slug: string;
 }
 
-const categories = ["All", "Mandala Art", "Warli Art", "Sketches", "Paintings"];
-
 const Products: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { addToCart } = useCart();
+  const navigate = useNavigate();
+
+  const PRODUCTS_PER_PAGE = 5;
 
   useEffect(() => {
     fetch("http://localhost:8000/products/")
@@ -42,88 +44,109 @@ const Products: React.FC = () => {
       });
   }, []);
 
-  const filteredProducts =
-    selectedCategory === "All"
-      ? products
-      : products.filter((product) => product.category === selectedCategory);
+  const visibleProducts = products.slice(
+    currentIndex,
+    currentIndex + PRODUCTS_PER_PAGE
+  );
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) =>
+      prev === 0 ? Math.max(products.length - PRODUCTS_PER_PAGE, 0) : prev - PRODUCTS_PER_PAGE
+    );
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prev) =>
+      prev + PRODUCTS_PER_PAGE >= products.length ? 0 : prev + PRODUCTS_PER_PAGE
+    );
+  };
 
   return (
     <div className="px-5 py-10">
       <h2 className="text-3xl font-bold text-center mb-6">Featured Artworks</h2>
-
-      <div className="flex justify-center space-x-4 mb-6">
-        {categories.map((category) => (
-          <button
-            key={category}
-            onClick={() => setSelectedCategory(category)}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
-              selectedCategory === category
-                ? "bg-red-600 text-white"
-                : "bg-gray-200 hover:bg-gray-300"
-            }`}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
 
       {loading ? (
         <p className="text-center text-gray-500">Loading products...</p>
       ) : error ? (
         <p className="text-center text-red-500">Error: {error}</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filteredProducts.length === 0 ? (
-            <p className="text-center text-gray-500">No products found.</p>
-          ) : (
-            filteredProducts.map((product) => (
-              <motion.div
-                key={product.id}
-                className="p-4 border rounded-lg shadow-md text-center cursor-pointer hover:shadow-lg transition-transform"
-                whileHover={{ scale: 1.05 }}
-              >
-                {/* Wrap image and title with Link */}
-                <Link to={`/products/${product.slug}`}>
-                  <img
-                    src={`http://localhost:8000/${product.image_url}`}
-                    alt={product.name}
-                    className="w-full h-72 object-contain rounded-lg"
-                  />
-                  <h3 className="text-lg font-semibold mt-2">{product.name}</h3>
-                </Link>
+        <>
+          <div className="flex justify-end mb-4">
+            <button
+              onClick={() => navigate("/all-products")}
+              className="px-6 py-2 bg-neutral-800 text-white rounded-full text-lg font-semibold shadow-md hover:bg-neutral-700 transition-all"
+            >
+              Explore All Products →
+            </button>
+          </div>
 
-                <p className="text-gray-500">{product.artist}</p>
-                <p className="text-sm mt-2">{product.description}</p>
-                <p className="mt-2">
-                  <span className="line-through text-gray-500">
-                    ₹{product.original_price}
-                  </span>{" "}
-                  <span className="text-red-600 font-bold">
-                    ₹{product.current_price}
-                  </span>
-                </p>
-                <button
-                  onClick={() =>
-                    addToCart({
-                      id: product.id,
-                      name: product.name,
-                      artist: product.artist,
-                      description: product.description,
-                      image: product.image_url,
-                      category: product.category,
-                      originalPrice: product.original_price,
-                      currentPrice: product.current_price,
-                    })
-                  }
-                  className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          <div className="relative">
+            {/* Arrows */}
+            <button
+              onClick={handlePrev}
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black text-white p-3 rounded-full z-10 hover:bg-gray-800"
+            >
+              <ChevronLeft size={24} />
+            </button>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mx-14">
+              {visibleProducts.map((product) => (
+                <motion.div
+                  key={product.id}
+                  className="p-5 border rounded-lg shadow-md text-center cursor-pointer hover:shadow-lg transition-transform bg-white"
+                  whileHover={{ scale: 1.05 }}
                 >
-                  Add to Cart
-                </button>
-              </motion.div>
-            ))
-          )}
-        </div>
+                  <Link to={`/products/${product.slug}`}>
+                    <img
+                      src={`http://localhost:8000/${product.image_url}`}
+                      alt={product.name}
+                      className="w-full h-80 object-contain rounded-lg mb-4"
+                    />
+                    <h3 className="text-xl font-semibold mt-2">
+                      {product.name}
+                    </h3>
+                  </Link>
+                  <p className="text-gray-500 text-base">{product.artist}</p>
+                  <p className="text-sm mt-2">{product.description}</p>
+                  <p className="mt-3 text-lg">
+                    <span className="line-through text-gray-400 mr-2">
+                      ₹{product.original_price}
+                    </span>{" "}
+                    <span className="text-red-600 font-bold">
+                      ₹{product.current_price}
+                    </span>
+                  </p>
+                  <button
+                    onClick={() =>
+                      addToCart({
+                        id: product.id,
+                        name: product.name,
+                        artist: product.artist,
+                        description: product.description,
+                        image: product.image_url,
+                        category: product.category,
+                        originalPrice: product.original_price,
+                        currentPrice: product.current_price,
+                      })
+                    }
+                    className="mt-4 px-5 py-2 bg-blue-700 text-white rounded-xl text-sm font-medium hover:bg-blue-800 transition-all"
+                  >
+                    Add to Cart
+                  </button>
+                </motion.div>
+              ))}
+            </div>
+
+            <button
+              onClick={handleNext}
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-black text-white p-3 rounded-full z-10 hover:bg-gray-800"
+            >
+              <ChevronRight />
+            </button>
+          </div>
+        </>
       )}
+
       <TrendingProducts />
     </div>
   );

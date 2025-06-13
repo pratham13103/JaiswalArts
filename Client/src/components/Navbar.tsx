@@ -6,7 +6,7 @@ import { useCart } from "../context/CartContext";
 const categories = [
   "Mandala",
   "Warli",
-  "Traditional",
+  "Paintings",
   "Abstract",
   "Modern",
   "Landscape",
@@ -55,7 +55,7 @@ const Navbar: React.FC = () => {
 
         {/* Middle: Category Buttons (instead of search bar) */}
         <div className="hidden md:flex space-x-6 ml-10">
-          {categories.slice(0, 4).map((category) => (
+          {categories.slice(0, 5).map((category) => (
             <button
               key={category}
               onClick={() => handleCategoryClick(category)}

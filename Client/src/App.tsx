@@ -21,6 +21,7 @@ import RefundPolicy from "./pages/Legal/RefundPolicy";
 import PrivacyPolicy from "./pages/Legal/PrivacyPolicy";
 import ShippingPolicy from "./pages/Legal/ShippingPolicy";
 import { CartProvider } from "./context/CartContext"; // ✅ Import Cart Context
+import AllProducts from "./pages/AllProducts";
 
 const App: React.FC = () => {
   return (
@@ -47,6 +48,8 @@ const App: React.FC = () => {
               <Route path="/admin" element={<Admin />} /> 
               <Route path="/add-product" element={<AddProduct />} />
               <Route path="/custom-orders" element={<CustomOrder />} /> {/* ✅ Add Custom Order Route */}
+              <Route path="/all-products" element={<AllProducts />} />
+
             </Routes>
           </main>
           <Footer />
