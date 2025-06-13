@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { ShoppingCart, MoveRight,} from "lucide-react";
 
 const TrendingProducts: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -33,29 +34,40 @@ const TrendingProducts: React.FC = () => {
         Trending Products
       </h2>
 
-      {/* Horizontal Reels Display */}
+      {/* Horizontal Reel Display */}
       <div className="flex justify-center">
         <div className="flex gap-6 overflow-x-auto pb-6">
           {videoSources.map((num, index) => (
-            <video
+            <div
               key={num}
-              src={`/videos/${num}.mp4`}
-              className="w-[320px] h-[600px] rounded-2xl shadow-xl object-cover flex-shrink-0 cursor-pointer"
-              autoPlay
-              loop
-              muted
-              playsInline
-              onClick={() => setSelectedIndex(index)}
-            />
+              className="relative w-[350px] h-[600px] rounded-2xl shadow-xl flex-shrink-0 group"
+            >
+              <video
+                src={`/videos/${num}.mp4`}
+                className="w-full h-full rounded-2xl object-cover cursor-pointer"
+                autoPlay
+                loop
+                muted
+                playsInline
+                onClick={() => setSelectedIndex(index)}
+              />
+              {/* View Details Button ON Video */}
+              <button
+                onClick={() => setSelectedIndex(index)}
+                className="absolute bottom-4 left-1/2 transform -translate-x-1/2 px-5 py-2 bg-orange-600 text-white font-medium rounded-md shadow hover:bg-orange-500 transition-all flex items-center gap-2"
+              >
+                View Details <MoveRight size={18} />
+              </button>
+            </div>
           ))}
         </div>
       </div>
 
-      {/* Explore All Products Button */}
+      {/* Explore All Products */}
       <div className="flex justify-center mt-10">
         <a
           href="/all-products"
-          className="px-8 py-3 text-lg font-semibold text-white bg-red-600 hover:bg-red-700 rounded-full shadow-md transition-all"
+          className="px-8 py-3 text-lg font-semibold text-white bg-gradient-to-r from-rose-500 to-red-600 hover:brightness-110 rounded-full shadow-md transition-all"
         >
           Explore All Products
         </a>
@@ -64,7 +76,7 @@ const TrendingProducts: React.FC = () => {
       {/* Overlay Reel Viewer */}
       {selectedIndex !== null && (
         <div className="fixed inset-0 z-50 bg-[#2a2a2a] flex items-center justify-center">
-          {/* Close Button */}
+          {/* Close */}
           <button
             onClick={() => setSelectedIndex(null)}
             className="absolute top-6 right-6 text-white hover:text-gray-300"
@@ -88,39 +100,59 @@ const TrendingProducts: React.FC = () => {
             <ChevronRight size={28} />
           </button>
 
-          {/* Reel Display with 5 total: 2 blurred left, 1 center, 2 blurred right */}
-          <div className="flex items-center gap-4 z-10 px-8 overflow-hidden">
-            {/* Left 2 blurred reels */}
-            {[getIndex(-2), getIndex(-1)].map((idx) => (
-              <video
-                key={`left-${idx}`}
-                src={`/videos/${videoSources[idx]}.mp4`}
-                className="w-[320px] h-[600px] rounded-xl blur-2xl opacity-25 pointer-events-none object-cover"
-                muted
-                playsInline
-              />
-            ))}
+          {/* Reel Display with Add to Cart */}
+          <div className="flex flex-col items-center z-10">
+            <div className="flex items-center gap-4 px-8 overflow-hidden">
+              {[getIndex(-2), getIndex(-1)].map((idx) => (
+                <video
+                  key={`left-${idx}`}
+                  src={`/videos/${videoSources[idx]}.mp4`}
+                  className="w-[320px] h-[600px] rounded-xl blur-2xl opacity-25 pointer-events-none object-cover"
+                  muted
+                  playsInline
+                />
+              ))}
 
-            {/* Center Active Reel */}
-            <video
-              src={`/videos/${videoSources[selectedIndex]}.mp4`}
-              className="w-[460px] h-[800px] rounded-xl border-4 border-white"
-              autoPlay
-              loop
-              controls
-              playsInline
-            />
+              <div className="relative">
+                {/* Center Active Reel with Action Icons */}
+                <div className="relative flex">
+                  <video
+                    src={`/videos/${videoSources[selectedIndex]}.mp4`}
+                    className="w-[460px] h-[800px] rounded-xl border-4 border-white"
+                    autoPlay
+                    loop
+                    controls
+                    playsInline
+                  />
 
-            {/* Right 2 blurred reels */}
-            {[getIndex(1), getIndex(2)].map((idx) => (
-              <video
-                key={`right-${idx}`}
-                src={`/videos/${videoSources[idx]}.mp4`}
-                className="w-[320px] h-[600px] rounded-xl blur-2xl opacity-25 pointer-events-none object-cover"
-                muted
-                playsInline
-              />
-            ))}
+                  {/* Icons to the Right */}
+                  <div className="flex flex-col justify-center items-center gap-6 ml-4">
+                    <button
+                      onClick={() => alert("Added to Cart")}
+                      className="bg-orange-200 text-orange-700 hover:bg-orange-300 p-3 rounded-full shadow-md transition"
+                    >
+                      <ShoppingCart size={24} />
+                    </button>
+                    <button
+                      onClick={() => alert("Forward")}
+                      className="bg-orange-200 text-orange-700 hover:bg-orange-300 p-3 rounded-full shadow-md transition"
+                    >
+                      <MoveRight size={24} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {[getIndex(1), getIndex(2)].map((idx) => (
+                <video
+                  key={`right-${idx}`}
+                  src={`/videos/${videoSources[idx]}.mp4`}
+                  className="w-[320px] h-[600px] rounded-xl blur-2xl opacity-25 pointer-events-none object-cover"
+                  muted
+                  playsInline
+                />
+              ))}
+            </div>
           </div>
         </div>
       )}
