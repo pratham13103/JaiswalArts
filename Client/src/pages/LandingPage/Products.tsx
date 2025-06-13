@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useCart } from "../../context/CartContext";
 import { Link } from "react-router-dom";
+import TrendingProducts from "./TrendingProducts";
 
 interface Product {
   id: number;
@@ -123,6 +124,7 @@ const Products: React.FC = () => {
           )}
         </div>
       )}
+      <TrendingProducts />
     </div>
   );
 };

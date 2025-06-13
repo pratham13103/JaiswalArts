@@ -163,7 +163,7 @@ const Navbar: React.FC = () => {
       {isSearchBarOpen && (
         <div className="w-full bg-white border-t border-b shadow-md py-6 px-8 md:px-20 flex flex-col md:flex-row items-start md:items-center gap-4">
           {/* Search Input */}
-          <form onSubmit={handleFormSubmit} className="flex w-full md:w-2/3 items-center border-2 border-red-600 rounded-lg px-4 py-3 shadow-sm">
+          <form onSubmit={handleFormSubmit} className="flex w-full md:w-2/3 items-center border-2 border-gray-700 rounded-lg px-4 py-3 shadow-sm">
             <input
               type="text"
               placeholder="Search artwork..."
@@ -182,7 +182,7 @@ const Navbar: React.FC = () => {
               <button
                 key={category}
                 onClick={() => handleCategoryClick(category)}
-                className="px-4 py-2 text-base font-semibold border border-red-500 text-red-700 rounded-full hover:bg-red-600 hover:text-white transition-all duration-200"
+                className="px-4 py-2 text-base font-semibold border border-gray-700 text-gray-800 rounded-full hover:bg-gray-800 hover:text-white transition-all duration-200"
               >
                 {category}
               </button>

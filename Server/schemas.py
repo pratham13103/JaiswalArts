@@ -9,7 +9,7 @@ class UserBase(BaseModel):
 class UserLogin(BaseModel):
     email: str
     password: str
-    
+
 class UserCreate(UserBase):
     password: str
 
@@ -17,7 +17,7 @@ class UserResponse(UserBase):
     id: int
 
     model_config = {
-        "from_attributes": True  # Pydantic v2 style
+        "from_attributes": True
     }
 
 class TokenData(BaseModel):
@@ -43,22 +43,21 @@ class ProductResponse(BaseModel):
     original_price: float
     current_price: float
     category: str
-    rating: float 
-    stock: int  
+    rating: float
+    stock: int
     slug: str
-    
-    class Config:
-        orm_mode = True
 
     model_config = {
-        "from_attributes": True  # Enable SQLAlchemy ORM compatibility
+        "from_attributes": True
     }
 
+# JWT settings
 class Settings(BaseModel):
-    authjwt_secret_key: str = "pratham123"  # Set your own secure key
+    authjwt_secret_key: str = "pratham123"
 
-settings = Settings()    
+settings = Settings()
 
+# Admin Schemas
 class AdminCreate(BaseModel):
     first_name: str
     last_name: str
@@ -75,5 +74,6 @@ class AdminResponse(BaseModel):
     last_name: str
     email: str
 
-    class Config:
-        from_attributes = True
+    model_config = {
+        "from_attributes": True
+    }
