@@ -74,7 +74,7 @@ const Products: React.FC = () => {
           <div className="flex justify-end mb-4">
             <button
               onClick={() => navigate("/all-products")}
-              className="px-6 py-2 bg-neutral-800 text-white rounded-full text-lg font-semibold shadow-md hover:bg-neutral-700 transition-all"
+              className="px-8 py-3 text-lg font-semibold text-white bg-red-600 hover:bg-red-700 rounded-full shadow-md transition-all"
             >
               Explore All Products →
             </button>
