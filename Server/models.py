@@ -15,6 +15,7 @@ class Product(Base):
     rating = Column(Float, nullable=False, default=0.0) 
     stock = Column(Integer, nullable=False, default=0)
     slug = Column(String, nullable=False, unique=True)
+    shape = Column(String, nullable=True)
 
 class User(Base):
     __tablename__ = "users"

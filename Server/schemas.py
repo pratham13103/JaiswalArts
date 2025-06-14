@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 # User Schemas
 class UserBase(BaseModel):
@@ -46,6 +47,7 @@ class ProductResponse(BaseModel):
     rating: float 
     stock: int  
     slug: str
+    shape: Optional[str] = None 
     
     class Config:
         orm_mode = True
