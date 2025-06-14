@@ -9,8 +9,8 @@ interface Product {
   artist: string;
   description: string; // ✅ Add this
   category: string; // ✅ Add this
+  quantity: number;
 }
-
 
 interface CartContextType {
   cart: Product[];
@@ -20,11 +20,25 @@ interface CartContextType {
 
 export const CartContext = createContext<CartContextType | null>(null); // Exported now ✅
 
-export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [cart, setCart] = useState<Product[]>([]);
 
   const addToCart = (product: Product) => {
-    setCart((prevCart) => [...prevCart, product]);
+    setCart((prevCart) => {
+      const existingProductIndex = prevCart.findIndex(
+        (item) => item.id === product.id
+      );
+
+      if (existingProductIndex !== -1) {
+        const updatedCart = [...prevCart];
+        updatedCart[existingProductIndex].quantity += product.quantity;
+        return updatedCart;
+      } else {
+        return [...prevCart, product];
+      }
+    });
   };
 
   const removeFromCart = (id: number) => {

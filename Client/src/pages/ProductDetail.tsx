@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext"; // ✅ Import cart context
 
 interface Product {
   id: number;
@@ -14,6 +15,7 @@ interface Product {
   rating: number;
   stock: number;
   specifications?: string[];
+  quantity: number;
 }
 
 const ProductDetail: React.FC = () => {
@@ -23,6 +25,8 @@ const ProductDetail: React.FC = () => {
   const [similarProducts, setSimilarProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { addToCart } = useCart(); // ✅ Use addToCart from context
+  const [quantity, setQuantity] = useState(1);
 
   // ✅ Fetch Product Details
   useEffect(() => {
@@ -60,7 +64,10 @@ const ProductDetail: React.FC = () => {
       .then((response) => response.json())
       .then((data: Product[]) => {
         const filteredProducts = data
-          .filter((item) => item.category === product.category && item.id !== product.id)
+          .filter(
+            (item) =>
+              item.category === product.category && item.id !== product.id
+          )
           .slice(0, 3); // Limit to 3 similar products
 
         setSimilarProducts(filteredProducts);
@@ -70,10 +77,13 @@ const ProductDetail: React.FC = () => {
 
   if (loading) return <p className="text-center text-gray-500">Loading...</p>;
   if (error) return <p className="text-center text-red-500">Error: {error}</p>;
-  if (!product) return <p className="text-center text-gray-500">Product not found.</p>;
+  if (!product)
+    return <p className="text-center text-gray-500">Product not found.</p>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 pt-32"> {/* Add pt-32 to prevent overlap with navbar */}
+    <div className="max-w-4xl mx-auto p-6 pt-32">
+      {" "}
+      {/* Add pt-32 to prevent overlap with navbar */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Product Image */}
         <img
@@ -87,39 +97,77 @@ const ProductDetail: React.FC = () => {
           <h2 className="text-3xl font-bold">{product.name}</h2>
           <p className="text-gray-500 mt-2">{product.artist}</p>
           <p className="text-lg mt-4">{product.description}</p>
-          <p className="mt-2 text-gray-600"><strong>Category:</strong> {product.category}</p>
+          <p className="mt-2 text-gray-600">
+            <strong>Category:</strong> {product.category}
+          </p>
 
           {/* Rating */}
           <div className="flex items-center mt-2">
             <span className="text-yellow-500">
               {"★".repeat(product.rating).padEnd(5, "☆")}
             </span>
-            <span className="text-gray-500 ml-2">({product.rating} out of 5)</span>
+            <span className="text-gray-500 ml-2">
+              ({product.rating} out of 5)
+            </span>
           </div>
 
           {/* Pricing */}
           <p className="mt-4">
-            <span className="line-through text-gray-500 text-xl">₹{product.original_price}</span>{" "}
-            <span className="text-red-600 text-2xl font-bold">₹{product.current_price}</span>
+            <span className="line-through text-gray-500 text-xl">
+              ₹{product.original_price}
+            </span>{" "}
+            <span className="text-red-600 text-2xl font-bold">
+              ₹{product.current_price}
+            </span>
           </p>
 
           {/* Stock Availability */}
           {product.stock > 0 ? (
-            <p className="mt-2 text-green-600 font-semibold">In Stock: {product.stock}</p>
+            <p className="mt-2 text-green-600 font-semibold">
+              In Stock: {product.stock}
+            </p>
           ) : (
             <p className="mt-2 text-red-600 font-semibold">Out of Stock</p>
           )}
 
-          {/* Add to Cart Button */}
+          {/* Quantity Selector */}
+          <div className="flex items-center gap-4 mt-4">
+            <button
+              onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
+              className="px-3 py-1 bg-gray-200 rounded text-lg"
+            >
+              −
+            </button>
+            <span className="text-lg font-medium">{quantity}</span>
+            <button
+              onClick={() => setQuantity((prev) => prev + 1)}
+              className="px-3 py-1 bg-gray-200 rounded text-lg"
+            >
+              +
+            </button>
+          </div>
+
           <button
             className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
             disabled={product.stock === 0}
+            onClick={() =>
+              addToCart({
+                id: product.id,
+                name: product.name,
+                artist: product.artist,
+                description: product.description,
+                image: product.image_url,
+                category: product.category,
+                originalPrice: product.original_price,
+                currentPrice: product.current_price,
+                quantity, // pass selected quantity
+              })
+            }
           >
             {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
           </button>
         </div>
       </div>
-
       {/* Similar Products Section */}
       {similarProducts.length > 0 && (
         <div className="mt-8">

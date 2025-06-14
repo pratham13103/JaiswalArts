@@ -84,7 +84,7 @@ const Products: React.FC = () => {
             {/* Arrows */}
             <button
               onClick={handlePrev}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black text-white p-3 rounded-full z-10 hover:bg-gray-800"
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white text-black p-3 rounded-full z-10 hover:bg-gray-200 shadow"
             >
               <ChevronLeft size={24} />
             </button>
@@ -127,6 +127,7 @@ const Products: React.FC = () => {
                         category: product.category,
                         originalPrice: product.original_price,
                         currentPrice: product.current_price,
+                        quantity:1  
                       })
                     }
                     className="mt-4 px-5 py-2 bg-blue-700 text-white rounded-xl text-sm font-medium hover:bg-blue-800 transition-all"
@@ -139,7 +140,7 @@ const Products: React.FC = () => {
 
             <button
               onClick={handleNext}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-black text-white p-3 rounded-full z-10 hover:bg-gray-800"
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white text-black p-3 rounded-full z-10 hover:bg-gray-200 shadow"
             >
               <ChevronRight />
             </button>

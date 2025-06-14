@@ -42,7 +42,9 @@ const Navbar: React.FC = () => {
           <span className="mx-16">🎨 Get 20% OFF on your first order!</span>
           <span className="mx-16">🖌️ New Arrivals Just Dropped!</span>
           <span className="mx-16">🚚 Free Shipping on orders above ₹5000</span>
-          <span className="mx-16">🎁 Custom Art Commissions Available – Contact us now!</span>
+          <span className="mx-16">
+            🎁 Custom Art Commissions Available – Contact us now!
+          </span>
         </div>
       </div>
 
@@ -137,21 +139,21 @@ const Navbar: React.FC = () => {
         <div className="mt-16 flex flex-col space-y-6 px-6">
           <Link
             to="/about"
-            className="text-lg text-gray-800 hover:text-red-600"
+            className="text-2xl font-semibold text-gray-800 hover:text-red-600"
             onClick={() => setSidebarOpen(false)}
           >
             About
           </Link>
           <Link
             to="/contact"
-            className="text-lg text-gray-800 hover:text-red-600"
+            className="text-2xl font-semibold text-gray-800 hover:text-red-600"
             onClick={() => setSidebarOpen(false)}
           >
             Contact
           </Link>
           <Link
             to="/admin-login"
-            className="text-lg text-gray-800 hover:text-red-600"
+            className="text-2xl font-semibold text-gray-800 hover:text-red-600"
             onClick={() => setSidebarOpen(false)}
           >
             Admin
@@ -163,7 +165,10 @@ const Navbar: React.FC = () => {
       {isSearchBarOpen && (
         <div className="w-full bg-white border-t border-b shadow-md py-6 px-8 md:px-20 flex flex-col md:flex-row items-start md:items-center gap-4">
           {/* Search Input */}
-          <form onSubmit={handleFormSubmit} className="flex w-full md:w-2/3 items-center border-2 border-gray-700 rounded-lg px-4 py-3 shadow-sm">
+          <form
+            onSubmit={handleFormSubmit}
+            className="flex w-full md:w-2/3 items-center border-2 border-gray-700 rounded-lg px-4 py-3 shadow-sm"
+          >
             <input
               type="text"
               placeholder="Search artwork..."

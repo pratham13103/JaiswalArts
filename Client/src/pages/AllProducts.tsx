@@ -53,7 +53,7 @@ const AllProducts: React.FC = () => {
   return (
     <div className="pt-28 px-6 min-h-screen bg-white">
       {/* Header and Toggle */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="mb-8 text-center">
         <h1 className="text-4xl font-bold text-gray-800">All Products</h1>
 
         <div className="flex gap-4">
@@ -123,6 +123,7 @@ const AllProducts: React.FC = () => {
                       category: product.category,
                       originalPrice: product.original_price,
                       currentPrice: product.current_price,
+                      quantity: 1,
                     })
                   }
                   className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all text-sm"

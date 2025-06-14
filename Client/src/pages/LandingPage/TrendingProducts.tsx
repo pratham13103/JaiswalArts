@@ -87,7 +87,7 @@ const TrendingProducts: React.FC = () => {
           {/* Left Arrow */}
           <button
             onClick={handlePrev}
-            className="absolute left-6 bg-black rounded-full p-3 hover:bg-gray-700 text-white z-20"
+            className="absolute left-6 bg-white text-black rounded-full p-3 hover:bg-gray-200 z-20"
           >
             <ChevronLeft size={28} />
           </button>
@@ -95,7 +95,7 @@ const TrendingProducts: React.FC = () => {
           {/* Right Arrow */}
           <button
             onClick={handleNext}
-            className="absolute right-6 bg-black rounded-full p-3 hover:bg-gray-700 text-white z-20"
+            className="absolute right-6 bg-white text-black rounded-full p-3 hover:bg-gray-200 z-20"
           >
             <ChevronRight size={28} />
           </button>
