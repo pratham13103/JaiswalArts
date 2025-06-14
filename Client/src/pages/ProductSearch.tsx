@@ -106,6 +106,7 @@ const ProductSearch: React.FC = () => {
                       category: product.category,
                       originalPrice: product.original_price,
                       currentPrice: product.current_price,
+                      quantity: 1
                     })
                   }
                   className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
