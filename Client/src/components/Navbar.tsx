@@ -1,28 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Search, ShoppingCart, User, Menu, X } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
-const categories = [
-  "Mandala",
-  "Warli",
-  "Paintings",
-  "Abstract",
-  "Modern",
-  "Landscape",
-];
+const categories = ["Mandala", "Warli", "Paintings", "Abstract", "Modern", "Landscape"];
 
 const Navbar: React.FC = () => {
   const { cart } = useCart();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [isSearchBarOpen, setSearchBarOpen] = useState(false); // NEW
+  const [isSearchBarOpen, setSearchBarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+const dropdownTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleCategoryClick = (category: string) => {
     setSearchQuery(category);
-    setSearchBarOpen(false); // Close the bottom bar after click
+    setSearchBarOpen(false);
     navigate(`/product-search?query=${category}`);
   };
 
@@ -34,6 +28,19 @@ const Navbar: React.FC = () => {
     }
   };
 
+  const openDropdown = () => {
+    setDropdownOpen(true);
+    if (dropdownTimerRef.current) clearTimeout(dropdownTimerRef.current);
+    dropdownTimerRef.current = setTimeout(() => {
+      setDropdownOpen(false);
+    }, 5000);
+  };
+
+  const handleDropdownInteraction = () => {
+    if (dropdownTimerRef.current) clearTimeout(dropdownTimerRef.current);
+    setDropdownOpen(false);
+  };
+
   return (
     <div className="fixed top-0 left-0 w-full z-50">
       {/* Marquee */}
@@ -42,20 +49,18 @@ const Navbar: React.FC = () => {
           <span className="mx-16">🎨 Get 20% OFF on your first order!</span>
           <span className="mx-16">🖌️ New Arrivals Just Dropped!</span>
           <span className="mx-16">🚚 Free Shipping on orders above ₹5000</span>
-          <span className="mx-16">
-            🎁 Custom Art Commissions Available – Contact us now!
-          </span>
+          <span className="mx-16">🎁 Custom Art Commissions Available – Contact us now!</span>
         </div>
       </div>
 
       {/* Main Navbar */}
       <nav className="w-full flex items-center justify-between px-8 md:px-20 py-5 bg-white shadow-md/10 backdrop-blur-md shadow-md z-50 h-20">
-        {/* Left: Website Title */}
+        {/* Title */}
         <h1 className="text-4xl font-serif font-bold bg-gradient-to-r from-red-700 to-orange-500 text-transparent bg-clip-text drop-shadow-md">
           Jaiswal Arts
         </h1>
 
-        {/* Middle: Category Buttons (instead of search bar) */}
+        {/* Categories */}
         <div className="hidden md:flex space-x-6 ml-10">
           {categories.slice(0, 5).map((category) => (
             <button
@@ -68,9 +73,9 @@ const Navbar: React.FC = () => {
           ))}
         </div>
 
-        {/* Right: Icons */}
+        {/* Right Icons */}
         <div className="flex items-center space-x-6 relative">
-          {/* Search Icon */}
+          {/* Search */}
           <button
             onClick={() => setSearchBarOpen(!isSearchBarOpen)}
             className="text-gray-800 hover:text-red-600"
@@ -78,25 +83,26 @@ const Navbar: React.FC = () => {
             <Search className="h-8 w-8" />
           </button>
 
-          {/* Profile Icon */}
+          {/* User Dropdown */}
           <div className="relative">
-            <button
-              onClick={() => setDropdownOpen(!isDropdownOpen)}
-              className="focus:outline-none"
-            >
+            <button onClick={openDropdown} className="focus:outline-none">
               <User className="h-8 w-8 text-gray-800 hover:text-red-600" />
             </button>
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-lg py-2">
+              <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-lg py-2 z-50">
                 <Link
                   to="/login"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                  onClick={handleDropdownInteraction}
                 >
                   Login
                 </Link>
                 <button
                   className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200"
-                  onClick={() => alert("Logged Out!")}
+                  onClick={() => {
+                    alert("Logged Out!");
+                    handleDropdownInteraction();
+                  }}
                 >
                   Logout
                 </button>
@@ -104,7 +110,7 @@ const Navbar: React.FC = () => {
             )}
           </div>
 
-          {/* Cart Icon */}
+          {/* Cart */}
           <Link to="/cart" className="relative">
             <ShoppingCart className="h-8 w-8 text-gray-800 hover:text-red-600" />
             {cart.length > 0 && (
@@ -114,7 +120,7 @@ const Navbar: React.FC = () => {
             )}
           </Link>
 
-          {/* Sidebar Menu */}
+          {/* Sidebar */}
           <button
             onClick={() => setSidebarOpen(true)}
             className="text-gray-800 hover:text-red-600 focus:outline-none"
@@ -124,11 +130,11 @@ const Navbar: React.FC = () => {
         </div>
       </nav>
 
-      {/* Sidebar */}
+      {/* Sidebar Content */}
       <div
         className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform ${
           isSidebarOpen ? "translate-x-0" : "translate-x-full"
-        } transition-transform duration-300 ease-in-out`}
+        } transition-transform duration-300 ease-in-out z-50`}
       >
         <button
           onClick={() => setSidebarOpen(false)}
@@ -161,10 +167,9 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Search Bar Navbar below main nav */}
+      {/* Search Bar */}
       {isSearchBarOpen && (
         <div className="w-full bg-white border-t border-b shadow-md py-6 px-8 md:px-20 flex flex-col md:flex-row items-start md:items-center gap-4">
-          {/* Search Input */}
           <form
             onSubmit={handleFormSubmit}
             className="flex w-full md:w-2/3 items-center border-2 border-gray-700 rounded-lg px-4 py-3 shadow-sm"
@@ -181,7 +186,7 @@ const Navbar: React.FC = () => {
             </button>
           </form>
 
-          {/* Categories */}
+          {/* Category Chips */}
           <div className="flex flex-wrap gap-2">
             {categories.map((category) => (
               <button

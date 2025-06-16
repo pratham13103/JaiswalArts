@@ -164,7 +164,12 @@ const TrendingProducts: React.FC = () => {
                       }
                       className="bg-orange-200 text-orange-700 hover:bg-orange-300 p-3 rounded-full shadow-md transition"
                     >
-                      <ShoppingCart size={24} />
+                      <div className="relative">
+                        <ShoppingCart size={28} className="text-orange-700" />
+                        <span className="absolute -top-2 -right-1 text-[13px] text-white bg-orange-700 rounded-full w-5 h-5 flex items-center justify-center font-semibold">
+                          +
+                        </span>
+                      </div>
                     </button>
                   </div>
                 </div>
