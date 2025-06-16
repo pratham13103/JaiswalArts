@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
     if (dropdownTimerRef.current) clearTimeout(dropdownTimerRef.current);
     dropdownTimerRef.current = setTimeout(() => {
       setDropdownOpen(false);
-    }, 5000);
+    }, 3000);
   };
 
   const handleDropdownInteraction = () => {

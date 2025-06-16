@@ -34,6 +34,25 @@ def delete_product(db: Session, product_id: int):
         db.rollback()
         print("Error deleting product:", e)
         raise e
+def update_product(db: Session, product_id: int, updated_data: dict):
+    product = db.query(Product).filter(Product.id == product_id).first()
+    
+    if not product:
+        return None  # Product not found
+
+    for key, value in updated_data.items():
+        if hasattr(product, key):
+            setattr(product, key, value)
+
+    try:
+        db.commit()
+        db.refresh(product)
+        print("Product updated successfully:", product)
+        return ProductResponse(**product.__dict__)
+    except Exception as e:
+        db.rollback()
+        print("Error updating product:", e)
+        raise e
 
 def get_products(db: Session):
     products = db.query(Product).all()

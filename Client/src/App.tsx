@@ -22,6 +22,8 @@ import PrivacyPolicy from "./pages/Legal/PrivacyPolicy";
 import ShippingPolicy from "./pages/Legal/ShippingPolicy";
 import { CartProvider } from "./context/CartContext"; // ✅ Import Cart Context
 import AllProducts from "./pages/AllProducts";
+import EditProduct from "./pages/EditProduct";
+import ProtectedRoute from "./components/ProtectedRoute"; // ✅ use this
 
 const App: React.FC = () => {
   return (
@@ -49,7 +51,9 @@ const App: React.FC = () => {
               <Route path="/add-product" element={<AddProduct />} />
               <Route path="/custom-orders" element={<CustomOrder />} /> {/* ✅ Add Custom Order Route */}
               <Route path="/all-products" element={<AllProducts />} />
-
+              <Route path="/edit-product/:id" element={<EditProduct />} />
+              <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>}/>
+              <Route path="/edit-product/:id" element={<ProtectedRoute><EditProduct /></ProtectedRoute>}/>
             </Routes>
           </main>
           <Footer />
