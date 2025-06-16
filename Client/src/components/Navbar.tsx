@@ -3,7 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { Search, ShoppingCart, User, Menu, X } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
-const categories = ["Mandala", "Warli", "Paintings", "Abstract", "Modern", "Landscape"];
+const categories = [
+  "Mandala",
+  "Warli",
+  "Paintings",
+  "Abstract",
+  "Modern",
+  "Landscape",
+];
 
 const Navbar: React.FC = () => {
   const { cart } = useCart();
@@ -12,7 +19,7 @@ const Navbar: React.FC = () => {
   const [isSearchBarOpen, setSearchBarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-const dropdownTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const dropdownTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleCategoryClick = (category: string) => {
     setSearchQuery(category);
@@ -49,7 +56,9 @@ const dropdownTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
           <span className="mx-16">🎨 Get 20% OFF on your first order!</span>
           <span className="mx-16">🖌️ New Arrivals Just Dropped!</span>
           <span className="mx-16">🚚 Free Shipping on orders above ₹5000</span>
-          <span className="mx-16">🎁 Custom Art Commissions Available – Contact us now!</span>
+          <span className="mx-16">
+            🎁 Custom Art Commissions Available – Contact us now!
+          </span>
         </div>
       </div>
 
@@ -100,6 +109,7 @@ const dropdownTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
                 <button
                   className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200"
                   onClick={() => {
+                    localStorage.removeItem("u_token"); // 👈 actually remove the token
                     alert("Logged Out!");
                     handleDropdownInteraction();
                   }}

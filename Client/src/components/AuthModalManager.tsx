@@ -1,15 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LoginModal from "./LoginModal";
 import SignupModal from "./SignupModal";
 
 interface AuthModalManagerProps {
   trigger?: React.ReactNode;
+  isOpen?: boolean;
+  onClose?: () => void;
   onAuthSuccess?: () => void;
 }
 
-const AuthModalManager: React.FC<AuthModalManagerProps> = ({ trigger, onAuthSuccess }) => {
+const AuthModalManager: React.FC<AuthModalManagerProps> = ({
+  trigger,
+  isOpen,
+  onClose,
+  onAuthSuccess,
+}) => {
   const [isLoginOpen, setLoginOpen] = useState(false);
   const [isSignupOpen, setSignupOpen] = useState(false);
+
+  // Open login modal when isOpen becomes true
+  useEffect(() => {
+    if (isOpen) {
+      setLoginOpen(true);
+      setSignupOpen(false);
+    }
+  }, [isOpen]);
 
   const openLogin = () => {
     setSignupOpen(false);
@@ -24,6 +39,7 @@ const AuthModalManager: React.FC<AuthModalManagerProps> = ({ trigger, onAuthSucc
   const closeModals = () => {
     setLoginOpen(false);
     setSignupOpen(false);
+    onClose?.();
   };
 
   return (
@@ -43,7 +59,7 @@ const AuthModalManager: React.FC<AuthModalManagerProps> = ({ trigger, onAuthSucc
       <SignupModal
         isOpen={isSignupOpen}
         onClose={closeModals}
-        onSuccess={openLogin} // after signup, go to login
+        onSuccess={openLogin} // After signup, go to login
         switchToLogin={openLogin}
       />
     </>

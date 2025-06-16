@@ -11,7 +11,7 @@ const Cart: React.FC = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   const totalPrice = cart.reduce((total, item) => total + item.currentPrice, 0);
-  const isUserLoggedIn = !!localStorage.getItem("user_token");
+  const isUserLoggedIn = !!localStorage.getItem("u_token");
 
   const handleCheckoutClick = () => {
     if (!isUserLoggedIn) {
@@ -117,7 +117,8 @@ const Cart: React.FC = () => {
 
       {showAuthModal && (
         <AuthModalManager
-          trigger={<></>} // not needed here, optional
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
           onAuthSuccess={() => {
             setShowAuthModal(false);
             handleCheckout();
