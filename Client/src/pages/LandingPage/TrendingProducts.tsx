@@ -1,10 +1,41 @@
 import React, { useState } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import { ShoppingCart, MoveRight,} from "lucide-react";
+import { ShoppingCart, MoveRight } from "lucide-react";
+import { useCart } from "../../context/CartContext";
 
 const TrendingProducts: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const videoSources = [1, 2, 3, 4, 5];
+  const videoSources = [
+    { video: 1, productId: 17 },
+    { video: 2, productId: 20 },
+    { video: 3, productId: 22 },
+    { video: 4, productId: 23 },
+    { video: 5, productId: 21 },
+  ];
+
+  const { addToCart } = useCart();
+
+  const handleAddToCart = async (productId: number) => {
+    try {
+      const res = await fetch(`http://localhost:8000/products/${productId}`);
+      if (!res.ok) throw new Error("Product not found");
+      const data = await res.json();
+
+      addToCart({
+        id: data.id,
+        name: data.name,
+        artist: data.artist,
+        description: data.description,
+        image: data.image_url,
+        category: data.category,
+        originalPrice: data.original_price,
+        currentPrice: data.current_price,
+        quantity: 1,
+      });
+    } catch (err) {
+      console.error("Error adding product to cart:", err);
+    }
+  };
 
   const handlePrev = () => {
     if (selectedIndex !== null) {
@@ -39,11 +70,11 @@ const TrendingProducts: React.FC = () => {
         <div className="flex gap-6 overflow-x-auto pb-6">
           {videoSources.map((num, index) => (
             <div
-              key={num}
+              key={num.video}
               className="relative w-[350px] h-[600px] rounded-2xl shadow-xl flex-shrink-0 group"
             >
               <video
-                src={`/videos/${num}.mp4`}
+                src={`/videos/${num.video}.mp4`}
                 className="w-full h-full rounded-2xl object-cover cursor-pointer"
                 autoPlay
                 loop
@@ -106,7 +137,7 @@ const TrendingProducts: React.FC = () => {
               {[getIndex(-2), getIndex(-1)].map((idx) => (
                 <video
                   key={`left-${idx}`}
-                  src={`/videos/${videoSources[idx]}.mp4`}
+                  src={`/videos/${videoSources[idx].video}.mp4`}
                   className="w-[320px] h-[600px] rounded-xl blur-2xl opacity-25 pointer-events-none object-cover"
                   muted
                   playsInline
@@ -117,7 +148,7 @@ const TrendingProducts: React.FC = () => {
                 {/* Center Active Reel with Action Icons */}
                 <div className="relative flex">
                   <video
-                    src={`/videos/${videoSources[selectedIndex]}.mp4`}
+                    src={`/videos/${videoSources[selectedIndex].video}.mp4`}
                     className="w-[460px] h-[800px] rounded-xl border-4 border-white"
                     autoPlay
                     loop
@@ -128,16 +159,12 @@ const TrendingProducts: React.FC = () => {
                   {/* Icons to the Right */}
                   <div className="flex flex-col justify-center items-center gap-6 ml-4">
                     <button
-                      onClick={() => alert("Added to Cart")}
+                      onClick={() =>
+                        handleAddToCart(videoSources[selectedIndex].productId)
+                      }
                       className="bg-orange-200 text-orange-700 hover:bg-orange-300 p-3 rounded-full shadow-md transition"
                     >
                       <ShoppingCart size={24} />
-                    </button>
-                    <button
-                      onClick={() => alert("Forward")}
-                      className="bg-orange-200 text-orange-700 hover:bg-orange-300 p-3 rounded-full shadow-md transition"
-                    >
-                      <MoveRight size={24} />
                     </button>
                   </div>
                 </div>
@@ -146,7 +173,7 @@ const TrendingProducts: React.FC = () => {
               {[getIndex(1), getIndex(2)].map((idx) => (
                 <video
                   key={`right-${idx}`}
-                  src={`/videos/${videoSources[idx]}.mp4`}
+                  src={`/videos/${videoSources[idx].video}.mp4`}
                   className="w-[320px] h-[600px] rounded-xl blur-2xl opacity-25 pointer-events-none object-cover"
                   muted
                   playsInline

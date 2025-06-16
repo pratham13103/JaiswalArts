@@ -9,6 +9,8 @@ const AddProduct: React.FC = () => {
     original_price: "",
     current_price: "",
     category: "",
+    shape: "",
+    stock: "",
     image: null as File | null,
   });
 
@@ -16,7 +18,11 @@ const AddProduct: React.FC = () => {
   const navigate = useNavigate();
   const categories = ["Mandala Art", "Warli Art", "Sketches", "Paintings"];
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
 
@@ -37,15 +43,20 @@ const AddProduct: React.FC = () => {
     formData.append("original_price", product.original_price);
     formData.append("current_price", product.current_price);
     formData.append("category", product.category);
+    formData.append("shape", product.shape);
+    formData.append("stock", product.stock);
     if (product.image) {
       formData.append("image", product.image);
     }
 
     try {
-      const response = await fetch("http://localhost:8000/products/add-product/", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "http://localhost:8000/products/add-product/",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         setMessage("Product added successfully!");
@@ -56,6 +67,8 @@ const AddProduct: React.FC = () => {
           original_price: "",
           current_price: "",
           category: "",
+          shape: "",
+          stock: "",
           image: null,
         });
         navigate("/admin"); // Redirect back to Admin page
@@ -73,22 +86,98 @@ const AddProduct: React.FC = () => {
       <h2 className="text-2xl font-bold mb-4 text-center">Add New Product</h2>
       {message && <p className="text-center text-red-600">{message}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input type="text" name="name" value={product.name} onChange={handleChange} placeholder="Product Name" className="w-full p-2 border rounded" required />
-        <input type="text" name="artist" value={product.artist} onChange={handleChange} placeholder="Artist Name" className="w-full p-2 border rounded" required />
-        <textarea name="description" value={product.description} onChange={handleChange} placeholder="Description" className="w-full p-2 border rounded" required />
-        <input type="number" name="original_price" value={product.original_price} onChange={handleChange} placeholder="Original Price" className="w-full p-2 border rounded" required />
-        <input type="number" name="current_price" value={product.current_price} onChange={handleChange} placeholder="Current Price" className="w-full p-2 border rounded" required />
-        
-        <select name="category" value={product.category} onChange={handleChange} className="w-full p-2 border rounded" required>
+        <input
+          type="text"
+          name="name"
+          value={product.name}
+          onChange={handleChange}
+          placeholder="Product Name"
+          className="w-full p-2 border rounded"
+          required
+        />
+        <input
+          type="text"
+          name="artist"
+          value={product.artist}
+          onChange={handleChange}
+          placeholder="Artist Name"
+          className="w-full p-2 border rounded"
+          required
+        />
+        <textarea
+          name="description"
+          value={product.description}
+          onChange={handleChange}
+          placeholder="Description"
+          className="w-full p-2 border rounded"
+          required
+        />
+        <input
+          type="number"
+          name="original_price"
+          value={product.original_price}
+          onChange={handleChange}
+          placeholder="Original Price"
+          className="w-full p-2 border rounded"
+          required
+        />
+        <input
+          type="number"
+          name="current_price"
+          value={product.current_price}
+          onChange={handleChange}
+          placeholder="Current Price"
+          className="w-full p-2 border rounded"
+          required
+        />
+
+        <select
+          name="category"
+          value={product.category}
+          onChange={handleChange}
+          className="w-full p-2 border rounded"
+          required
+        >
           <option value="">Select Category</option>
           {categories.map((cat) => (
-            <option key={cat} value={cat}>{cat}</option>
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
           ))}
         </select>
+        <input
+          type="text"
+          name="shape"
+          value={product.shape}
+          onChange={handleChange}
+          placeholder="Shape (e.g., Square, Round)"
+          className="w-full p-2 border rounded"
+          required
+        />
+        <input
+          type="number"
+          name="stock"
+          value={product.stock}
+          onChange={handleChange}
+          placeholder="Stock Quantity"
+          className="w-full p-2 border rounded"
+          required
+        />
 
-        <input type="file" name="image" onChange={handleFileChange} className="w-full p-2 border rounded" required />
-        
-        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Add Product</button>
+        <input
+          type="file"
+          name="image"
+          onChange={handleFileChange}
+          className="w-full p-2 border rounded"
+          required
+        />
+
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+        >
+          Add Product
+        </button>
       </form>
     </div>
   );

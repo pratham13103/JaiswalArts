@@ -4,6 +4,7 @@ import { Trash2 } from "lucide-react";
 
 interface Product {
   id: number;
+  slug: string;
   image_url: string;
   name: string;
   artist: string;
@@ -78,7 +79,9 @@ const Admin: React.FC = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {products.map((product) => (
-            <div key={product.id} className="w-full p-6 border rounded-lg shadow-lg relative">
+            <div key={product.id} 
+            className="w-full p-6 border rounded-lg shadow-lg relative cursor-pointer hover:shadow-xl transition"
+            onClick={() => navigate(`/products/${product.slug}`)} >
               {/* Delete Icon */}
               <button
                 onClick={() => handleDelete(product.id)}

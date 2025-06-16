@@ -36,6 +36,7 @@ def add_product(
     current_price: float = Form(...),
     category: str = Form(...),
     shape: str = Form(...),
+    stock: int = Form(...),
     image: UploadFile = File(...),
     db: Session = Depends(get_db),
 ):
@@ -55,6 +56,7 @@ def add_product(
         "current_price": current_price,
         "category": category,
         "shape": shape,
+        "stock": stock,
         "image_url": image_path,
         "slug": slug,  
     }

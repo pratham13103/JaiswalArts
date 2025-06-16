@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { useCart } from "../context/CartContext";
 import { Trash2 } from "lucide-react";
 import axios from "axios";
-import AuthModalManager from "../components/AuthModalManager"; // ✅ Import modal
+import { useNavigate } from "react-router-dom";
+import AuthModalManager from "../components/AuthModalManager";
 
 const Cart: React.FC = () => {
   const { cart, removeFromCart } = useCart();
-
+  const navigate = useNavigate();
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   const totalPrice = cart.reduce((total, item) => total + item.currentPrice, 0);
@@ -75,13 +76,23 @@ const Cart: React.FC = () => {
                   alt={item.name}
                   className="w-28 h-28 md:w-36 md:h-36 object-cover rounded-lg"
                 />
-                <div className="flex-1 ml-6">
+                <div
+                  className="flex-1 ml-6 cursor-pointer"
+                  onClick={() =>
+                    navigate(
+                      `/products/${item.name
+                        .toLowerCase()
+                        .replace(/\s+/g, "-")}`
+                    )
+                  }
+                >
                   <h3 className="text-2xl font-bold">{item.name}</h3>
                   <p className="text-lg text-gray-600">{item.artist}</p>
                   <p className="text-xl text-red-600 font-semibold mt-1">
                     ₹{item.currentPrice}
                   </p>
                 </div>
+
                 <button
                   onClick={() => removeFromCart(item.id)}
                   className="text-red-600 hover:text-red-800"

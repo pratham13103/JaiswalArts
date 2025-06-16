@@ -25,8 +25,10 @@ const ProductDetail: React.FC = () => {
   const [similarProducts, setSimilarProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { addToCart } = useCart();
+  const { addToCart, cart } = useCart();
   const [quantity, setQuantity] = useState(1);
+
+const isInCart = product && cart.some((item) => item.id === product.id);
 
   // Fetch Product Details
   useEffect(() => {
@@ -157,33 +159,39 @@ const ProductDetail: React.FC = () => {
 
                 <div className="flex gap-4 mt-4 flex-wrap">
                   <button
-                    className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
-                    disabled={product.stock === 0}
-                    onClick={() =>
-                      addToCart({
-                        id: product.id,
-                        name: product.name,
-                        artist: product.artist,
-                        description: product.description,
-                        image: product.image_url,
-                        category: product.category,
-                        originalPrice: product.original_price,
-                        currentPrice: product.current_price,
-                        quantity,
-                      })
-                    }
+                    className={`py-2 px-4 rounded-lg text-white ${
+                      isInCart
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-blue-600 hover:bg-blue-700"
+                    }`}
+                    disabled={isInCart || product.stock === 0}
+                    onClick={() => {
+                      if (!isInCart) {
+                        addToCart({
+                          id: product.id,
+                          name: product.name,
+                          artist: product.artist,
+                          description: product.description,
+                          image: product.image_url,
+                          category: product.category,
+                          originalPrice: product.original_price,
+                          currentPrice: product.current_price,
+                          quantity,
+                        });
+                      }
+                    }}
                   >
-                    {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
+                    {isInCart
+                      ? "Added to Cart"
+                      : product.stock > 0
+                      ? "Add to Cart"
+                      : "Out of Stock"}
                   </button>
-
-                  
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        
       </div>
       {/* Similar Products: Below full-width */}
       {similarProducts.length > 0 && (
