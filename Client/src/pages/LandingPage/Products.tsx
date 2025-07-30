@@ -28,7 +28,7 @@ const Products: React.FC = () => {
   const PRODUCTS_PER_PAGE = 5;
 
   useEffect(() => {
-    fetch("http://54.92.204.233:8000/products/")
+    fetch("http://localhost:8000/products/")
       .then((response) => {
         if (!response.ok) throw new Error("Failed to fetch products");
         return response.json();
