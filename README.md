@@ -10,3 +10,5 @@ II] Setup Database using these commands :
 7)Your Database will be setup successfully 
 
 III] Setup Backend using the commands given in README.md in Server folder
+
+![App Screenshot](https://github.com/pratham13103/JaiswalArts/blob/master/Client/public/Jaiswalarts.png)
