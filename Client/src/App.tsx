@@ -11,6 +11,7 @@ import Admin from "./pages/Admin";
 import AdminLogin from "./pages/AdminLogin"; 
 import AdminSignup from "./pages/AdminSignup"; 
 import AddProduct from "./pages/AddProduct";
+import Vision from "./pages/vision"; // Import Vision page
 import CustomOrder from "./pages/CustomOrders"; // ✅ Import Custom Order component
 import About from "./pages/About"; // Import About page
 import Contact from "./pages/Contact"; // Import Contact page
@@ -54,6 +55,7 @@ const App: React.FC = () => {
               <Route path="/edit-product/:id" element={<EditProduct />} />
               <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>}/>
               <Route path="/edit-product/:id" element={<ProtectedRoute><EditProduct /></ProtectedRoute>}/>
+              <Route path="/vision" element={<Vision />} />
             </Routes>
           </main>
           <Footer />

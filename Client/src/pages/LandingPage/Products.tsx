@@ -62,8 +62,8 @@ const Products: React.FC = () => {
   };
 
   return (
-    <div className="px-5 py-10">
-      <h2 className="text-3xl font-bold text-center mb-6">Featured Artworks</h2>
+    <div className="px-4 md:px-14 py-14 bg-gradient-to-br from-[#fefefc] to-[#f2e9e4]">
+      <h2 className="text-3xl font-bold text-center text-gray-800 mb-10">Featured Artworks</h2>
 
       {loading ? (
         <p className="text-center text-gray-500">Loading products...</p>
@@ -71,50 +71,37 @@ const Products: React.FC = () => {
         <p className="text-center text-red-500">Error: {error}</p>
       ) : (
         <>
-          <div className="flex justify-end mb-4">
+          <div className="flex justify-end mb-8">
             <button
               onClick={() => navigate("/all-products")}
-              className="px-8 py-3 text-lg font-semibold text-white bg-red-600 hover:bg-red-700 rounded-full shadow-md transition-all"
+              className="px-6 py-2 text-base font-semibold bg-gradient-to-r from-red-600 to-orange-500 text-white rounded-full hover:shadow-xl transition-all"
             >
               Explore All Products →
             </button>
           </div>
 
-          <div className="relative">
-            {/* Arrows */}
-            <button
-              onClick={handlePrev}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white text-black p-3 rounded-full z-10 hover:bg-gray-200 shadow"
-            >
-              <ChevronLeft size={24} />
-            </button>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mx-14">
-              {visibleProducts.map((product) => (
+          {/* Mobile - Horizontal Scroll */}
+          <div className="relative block lg:hidden">
+            <div className="flex overflow-x-auto gap-6 no-scrollbar px-2">
+              {products.map((product) => (
                 <motion.div
                   key={product.id}
-                  className="p-5 border rounded-lg shadow-md text-center cursor-pointer hover:shadow-lg transition-transform bg-white"
-                  whileHover={{ scale: 1.05 }}
+                  className="min-w-[80%] p-4 rounded-2xl bg-white/60 backdrop-blur-md border border-gray-200 shadow-md flex-shrink-0"
+                  whileHover={{ scale: 1.03 }}
                 >
                   <Link to={`/products/${product.slug}`}>
                     <img
                       src={`http://localhost:8000/${product.image_url}`}
                       alt={product.name}
-                      className="w-full h-80 object-contain rounded-lg mb-4"
+                      className="w-full h-48 object-contain rounded-lg mb-3"
                     />
-                    <h3 className="text-xl font-semibold mt-2">
-                      {product.name}
-                    </h3>
+                    <h3 className="text-lg font-semibold text-gray-800">{product.name}</h3>
                   </Link>
-                  <p className="text-gray-500 text-base">{product.artist}</p>
-                  <p className="text-sm mt-2">{product.description}</p>
-                  <p className="mt-3 text-lg">
-                    <span className="line-through text-gray-400 mr-2">
-                      ₹{product.original_price}
-                    </span>{" "}
-                    <span className="text-red-600 font-bold">
-                      ₹{product.current_price}
-                    </span>
+                  <p className="text-sm text-gray-500">{product.artist}</p>
+                  <p className="text-sm mt-1 text-gray-600">{product.description}</p>
+                  <p className="mt-2 text-base">
+                    <span className="line-through text-gray-400 mr-2">₹{product.original_price}</span>
+                    <span className="text-red-600 font-bold">₹{product.current_price}</span>
                   </p>
                   <button
                     onClick={() =>
@@ -127,10 +114,63 @@ const Products: React.FC = () => {
                         category: product.category,
                         originalPrice: product.original_price,
                         currentPrice: product.current_price,
-                        quantity:1  
+                        quantity: 1,
                       })
                     }
-                    className="mt-4 px-5 py-2 bg-blue-700 text-white rounded-xl text-sm font-medium hover:bg-blue-800 transition-all"
+                    className="mt-3 w-full py-2 bg-blue-700 text-white rounded-lg text-sm hover:bg-blue-800 transition"
+                  >
+                    Add to Cart
+                  </button>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop - Grid View with Navigation */}
+          <div className="relative hidden lg:block">
+            <button
+              onClick={handlePrev}
+              className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-md border border-gray-300 p-3 rounded-full hover:bg-gray-100 z-10 shadow"
+            >
+              <ChevronLeft size={24} />
+            </button>
+
+            <div className="grid grid-cols-5 gap-8 mx-12">
+              {visibleProducts.map((product) => (
+                <motion.div
+                  key={product.id}
+                  className="p-5 rounded-2xl bg-white/60 border border-gray-200 shadow-md hover:shadow-lg backdrop-blur-md transition-all"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <Link to={`/products/${product.slug}`}>
+                    <img
+                      src={`http://localhost:8000/${product.image_url}`}
+                      alt={product.name}
+                      className="w-full h-64 object-contain rounded-xl mb-4"
+                    />
+                    <h3 className="text-xl font-semibold text-gray-800">{product.name}</h3>
+                  </Link>
+                  <p className="text-gray-500 text-sm">{product.artist}</p>
+                  <p className="text-sm text-gray-600 mt-2">{product.description}</p>
+                  <p className="mt-3 text-lg">
+                    <span className="line-through text-gray-400 mr-2">₹{product.original_price}</span>
+                    <span className="text-red-600 font-bold">₹{product.current_price}</span>
+                  </p>
+                  <button
+                    onClick={() =>
+                      addToCart({
+                        id: product.id,
+                        name: product.name,
+                        artist: product.artist,
+                        description: product.description,
+                        image: product.image_url,
+                        category: product.category,
+                        originalPrice: product.original_price,
+                        currentPrice: product.current_price,
+                        quantity: 1,
+                      })
+                    }
+                    className="mt-4 w-full py-2 bg-blue-700 text-white rounded-xl text-sm font-medium hover:bg-blue-800 transition-all"
                   >
                     Add to Cart
                   </button>
@@ -140,7 +180,7 @@ const Products: React.FC = () => {
 
             <button
               onClick={handleNext}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white text-black p-3 rounded-full z-10 hover:bg-gray-200 shadow"
+              className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-md border border-gray-300 p-3 rounded-full hover:bg-gray-100 z-10 shadow"
             >
               <ChevronRight />
             </button>
