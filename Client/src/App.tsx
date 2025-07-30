@@ -25,6 +25,7 @@ import { CartProvider } from "./context/CartContext"; // ✅ Import Cart Context
 import AllProducts from "./pages/AllProducts";
 import EditProduct from "./pages/EditProduct";
 import ProtectedRoute from "./components/ProtectedRoute"; // ✅ use this
+import UnderDevelopment from "./pages/UnderDevelopment"; 
 
 const App: React.FC = () => {
   return (
@@ -56,6 +57,8 @@ const App: React.FC = () => {
               <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>}/>
               <Route path="/edit-product/:id" element={<ProtectedRoute><EditProduct /></ProtectedRoute>}/>
               <Route path="/vision" element={<Vision />} />
+              <Route path="/prints" element={<UnderDevelopment />} /> 
+              <Route path="/digital-art" element={<UnderDevelopment />} /> 
             </Routes>
           </main>
           <Footer />

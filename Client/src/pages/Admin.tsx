@@ -46,6 +46,12 @@ const Admin: React.FC = () => {
   return (
     <div className="p-4 mt-16">
       <h2 className="text-2xl font-bold mb-4">Admin - Product List</h2>
+      <button
+        onClick={() => navigate("/add-product")}
+        className="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 text-lg mb-6"
+      >
+        Add Product
+      </button>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
           <div
