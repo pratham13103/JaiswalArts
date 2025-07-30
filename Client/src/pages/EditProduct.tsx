@@ -21,7 +21,7 @@ const EditProduct: React.FC = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  // const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   useEffect(() => {
     fetch(`http://localhost:8000/products/${id}`)
@@ -54,7 +54,7 @@ const EditProduct: React.FC = () => {
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!product || !e.target.files || e.target.files.length === 0) return;
     const file = e.target.files[0];
-    setSelectedImage(file);
+    // setSelectedImage(file);
 
     const formData = new FormData();
     formData.append("file", file);

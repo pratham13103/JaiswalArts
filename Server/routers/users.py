@@ -14,7 +14,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    return create_user(db, user.model_dump())
+    return create_user(db, user.dict())
 
 @router.post("/login/", response_model=TokenData)
 def login_user(user: UserLogin, db: Session = Depends(get_db), Authorize: AuthJWT = Depends()):

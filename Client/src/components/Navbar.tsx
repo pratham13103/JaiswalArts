@@ -63,9 +63,9 @@ const Navbar: React.FC = () => {
       {/* Main Navbar */}
       <nav className="w-full flex items-center justify-between px-4 md:px-20 py-4 md:py-5 bg-white shadow-md/10 backdrop-blur-md shadow-md z-50 h-20">
         {/* Title */}
-        <h1 className="text-3xl md:text-4xl font-serif font-bold bg-gradient-to-r from-red-700 to-orange-500 text-transparent bg-clip-text drop-shadow-md">
+        <Link to="/" className="text-3xl md:text-4xl font-serif font-bold bg-gradient-to-r from-red-700 to-orange-500 text-transparent bg-clip-text drop-shadow-md">
           Jaiswal Arts
-        </h1>
+        </Link>
 
         {/* Categories */}
         <div className="hidden md:flex space-x-4 md:space-x-6 ml-4 md:ml-10">
