@@ -15,7 +15,7 @@ const ProductOfTheWeek: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:8000/products/slug/mandala-7")
+    fetch(`${import.meta.env.VITE_SERVER_URL}/products/slug/mandala-7`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch product");
         return res.json();
@@ -46,7 +46,7 @@ const ProductOfTheWeek: React.FC = () => {
           <div className="flex flex-col lg:flex-row items-center gap-10 max-w-5xl mx-auto bg-white p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all">
             {/* Left: Product Image */}
             <img
-              src={`http://localhost:8000/${product.image_url}`}
+              src={`${import.meta.env.VITE_SERVER_URL}/${product.image_url}`}
               alt={product.name}
               className="w-full lg:w-[400px] h-[400px] object-cover rounded-xl"
             />

@@ -28,7 +28,7 @@ const Products: React.FC = () => {
   const PRODUCTS_PER_PAGE = 5;
 
   useEffect(() => {
-    fetch("http://localhost:8000/products/")
+    fetch(`${import.meta.env.VITE_SERVER_URL}/products/`)
       .then((response) => {
         if (!response.ok) throw new Error("Failed to fetch products");
         return response.json();
@@ -91,7 +91,7 @@ const Products: React.FC = () => {
                 >
                   <Link to={`/products/${product.slug}`}>
                     <img
-                      src={`http://localhost:8000/${product.image_url}`}
+                      src={`${import.meta.env.VITE_SERVER_URL}/${product.image_url}`}
                       alt={product.name}
                       className="w-full h-48 object-contain rounded-lg mb-3"
                     />
@@ -144,7 +144,7 @@ const Products: React.FC = () => {
                 >
                   <Link to={`/products/${product.slug}`}>
                     <img
-                      src={`http://localhost:8000/${product.image_url}`}
+                      src={`${import.meta.env.VITE_SERVER_URL}/${product.image_url}`}
                       alt={product.name}
                       className="w-full h-64 object-contain rounded-xl mb-4"
                     />

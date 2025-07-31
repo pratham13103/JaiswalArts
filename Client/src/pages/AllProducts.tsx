@@ -26,7 +26,7 @@ const AllProducts: React.FC = () => {
   const { addToCart } = useCart();
 
   useEffect(() => {
-    fetch("http://localhost:8000/products/")
+    fetch(`${import.meta.env.VITE_SERVER_URL}/products/`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch products");
         return res.json();
@@ -98,7 +98,7 @@ const AllProducts: React.FC = () => {
               >
                 <Link to={`/products/${product.slug}`}>
                   <img
-                    src={`http://localhost:8000/${product.image_url}`}
+                    src={`${import.meta.env.VITE_SERVER_URL}/${product.image_url}`}
                     alt={product.name}
                     className="w-full h-72 object-contain rounded-xl mb-4"
                   />

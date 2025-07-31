@@ -36,7 +36,7 @@ const isInCart = product && cart.some((item) => item.id === product.id);
     setLoading(true);
     setError(null);
 
-    fetch(`http://localhost:8000/products/slug/${slug}`)
+    fetch(`${import.meta.env.VITE_SERVER_URL}/products/slug/${slug}`)
       .then((res) => {
         if (!res.ok) throw new Error("Product not found");
         return res.json();
@@ -60,7 +60,7 @@ const isInCart = product && cart.some((item) => item.id === product.id);
   useEffect(() => {
     if (!product?.category) return;
 
-    fetch(`http://localhost:8000/products`)
+    fetch(`${import.meta.env.VITE_SERVER_URL}/products`)
       .then((res) => res.json())
       .then((data: Product[]) => {
         const filtered = data
@@ -91,7 +91,7 @@ const isInCart = product && cart.some((item) => item.id === product.id);
             {/* Image Left */}
             <div className="flex-shrink-0 w-full md:w-1/2 flex justify-center items-center">
               <img
-                src={`http://localhost:8000/${product.image_url}`}
+                src={`${import.meta.env.VITE_SERVER_URL}/${product.image_url}`}
                 alt={product.name}
                 className="h-80 object-contain rounded-lg"
               />
@@ -205,7 +205,7 @@ const isInCart = product && cart.some((item) => item.id === product.id);
                 onClick={() => navigate(`/products/${item.slug}`)}
               >
                 <img
-                  src={`http://localhost:8000/${item.image_url}`}
+                  src={`${import.meta.env.VITE_SERVER_URL}/${item.image_url}`}
                   alt={item.name}
                   className="w-full h-32 object-contain rounded"
                 />

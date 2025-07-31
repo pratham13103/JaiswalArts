@@ -24,7 +24,7 @@ const EditProduct: React.FC = () => {
   // const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/products/${id}`)
+    fetch(`${import.meta.env.VITE_SERVER_URL}/products/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setProduct(data);
@@ -61,7 +61,7 @@ const EditProduct: React.FC = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8000/products/${product.id}/upload-image`,
+        `${import.meta.env.VITE_SERVER_URL}/products/${product.id}/upload-image`,
         {
           method: "POST",
           body: formData,
@@ -82,7 +82,7 @@ const EditProduct: React.FC = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8000/products/${product.id}/delete-image`,
+        `${import.meta.env.VITE_SERVER_URL}/products/${product.id}/delete-image`,
         {
           method: "DELETE",
         }
@@ -101,7 +101,7 @@ const EditProduct: React.FC = () => {
     if (!product) return;
 
     try {
-      const response = await fetch(`http://localhost:8000/products/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/products/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(product),
@@ -126,7 +126,7 @@ const EditProduct: React.FC = () => {
         {product.image_url ? (
           <div className="relative w-full h-[500px] flex items-center justify-center bg-gray-100 rounded-lg border">
             <img
-              src={`http://localhost:8000/${product.image_url}`}
+              src={`${import.meta.env.VITE_SERVER_URL}/${product.image_url}`}
               alt="Product"
               className="max-h-full max-w-full object-contain"
             />

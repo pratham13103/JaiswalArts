@@ -22,7 +22,7 @@ const Admin: React.FC = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:8000/products");
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/products`);
       const data = await res.json();
       setProducts(data);
     } catch (error) {
@@ -32,7 +32,7 @@ const Admin: React.FC = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await fetch(`http://localhost:8000/products/${id}`, { method: "DELETE" });
+      await fetch(`${import.meta.env.VITE_SERVER_URL}/${id}`, { method: "DELETE" });
       fetchProducts();
     } catch (error) {
       console.error("Error deleting product", error);
@@ -59,7 +59,7 @@ const Admin: React.FC = () => {
             className="border rounded-xl p-6 shadow-lg min-h-[500px] flex flex-col"
           >
             <img
-              src={`http://localhost:8000/${product.image_url}`}
+              src={`${import.meta.env.VITE_SERVER_URL}/${product.image_url}`}
               alt={product.name}
               className="w-full h-64 object-contain mb-4 rounded-lg"
             />

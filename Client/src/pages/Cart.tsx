@@ -72,7 +72,7 @@ const Cart: React.FC = () => {
                 className="border p-6 rounded-2xl shadow-lg flex items-center justify-between gap-6"
               >
                 <img
-                  src={`http://localhost:8000/${item.image}`}
+                  src={`${import.meta.env.VITE_SERVER_URL}/${item.image}`}
                   alt={item.name}
                   className="w-28 h-28 md:w-36 md:h-36 object-cover rounded-lg"
                 />

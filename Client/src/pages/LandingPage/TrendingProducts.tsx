@@ -17,7 +17,7 @@ const TrendingProducts: React.FC = () => {
 
   const handleAddToCart = async (productId: number) => {
     try {
-      const res = await fetch(`http://localhost:8000/products/${productId}`);
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/products/${productId}`);
       if (!res.ok) throw new Error("Product not found");
       const data = await res.json();
 

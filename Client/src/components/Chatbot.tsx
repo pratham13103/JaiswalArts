@@ -11,7 +11,7 @@ const Chatbot = () => {
     setMessages((prev) => [...prev, { sender: "user", text: input }]);
 
     try {
-      const res = await axios.post("http://localhost:8000/chat", { message: input });
+      const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/chat`, { message: input });
       setMessages((prev) => [...prev, { sender: "bot", text: res.data.response }]);
     } catch (err) {
       setMessages((prev) => [...prev, { sender: "bot", text: "Error contacting server." }]);

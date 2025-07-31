@@ -51,7 +51,7 @@ const AddProduct: React.FC = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8000/products/add-product/",
+        `${import.meta.env.VITE_SERVER_URL}/add-product/`,
         {
           method: "POST",
           body: formData,
