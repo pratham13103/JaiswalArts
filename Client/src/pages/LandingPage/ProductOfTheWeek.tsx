@@ -1,36 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
-interface Product {
-  id: number;
-  name: string;
-  slug: string;
-  description: string;
-  image_url: string;
-  current_price: number;
-}
-
 const ProductOfTheWeek: React.FC = () => {
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_SERVER_URL}/products/slug/mandala-7`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch product");
-        return res.json();
-      })
-      .then((data) => {
-        setProduct(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading || !product) return null;
+  const product = {
+    id: 999,
+    name: "Electric Lime Black Mirror Mandala",
+    slug: "electric-lime-black-mirror-mandala",
+    description: "Electric Lime Black Mirror Mandala",
+    image_url: "uploads/Electric Lime Black Mirror Mandala.jpeg",
+    current_price: 699,
+  };
 
   return (
     <section className="py-16 bg-red-50">
@@ -44,18 +23,13 @@ const ProductOfTheWeek: React.FC = () => {
 
         <Link to={`/products/${product.slug}`}>
           <div className="flex flex-col lg:flex-row items-center gap-10 max-w-5xl mx-auto bg-white p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all">
-            {/* Left: Product Image */}
             <img
               src={`${import.meta.env.VITE_SERVER_URL}/${product.image_url}`}
               alt={product.name}
               className="w-full lg:w-[400px] h-[400px] object-cover rounded-xl"
             />
-
-            {/* Right: Product Info */}
             <div className="text-left space-y-4">
-              <h3 className="text-3xl font-bold text-gray-900">
-                {product.name}
-              </h3>
+              <h3 className="text-3xl font-bold text-gray-900">{product.name}</h3>
               <p className="text-lg text-gray-700">{product.description}</p>
               <p className="text-2xl font-bold text-red-600">
                 ₹{product.current_price}
